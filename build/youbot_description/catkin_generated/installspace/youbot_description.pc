@@ -1,0 +1,8 @@
+prefix=/home/parallels/Extended-Kalman-ROS/install
+
+Name: youbot_description
+Description: Description of youbot_description
+Version: 0.8.1
+Cflags: 
+Libs: -L/home/parallels/Extended-Kalman-ROS/install/lib 
+Requires: 
