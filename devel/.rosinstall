@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/parallels/Extended-Kalman-ROS/devel/setup.sh
