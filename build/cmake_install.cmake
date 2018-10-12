@@ -117,6 +117,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/parallels/Extended-Kalman-ROS/build/gtest/cmake_install.cmake")
+  include("/home/parallels/Extended-Kalman-ROS/build/kuka_kickass_kalman/cmake_install.cmake")
   include("/home/parallels/Extended-Kalman-ROS/build/youbot_description/cmake_install.cmake")
   include("/home/parallels/Extended-Kalman-ROS/build/youbot_simulation/youbot_gazebo_control/cmake_install.cmake")
   include("/home/parallels/Extended-Kalman-ROS/build/youbot_simulation/youbot_gazebo_robot/cmake_install.cmake")

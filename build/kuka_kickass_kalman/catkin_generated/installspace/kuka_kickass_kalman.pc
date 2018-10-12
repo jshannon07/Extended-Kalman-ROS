@@ -1,0 +1,8 @@
+prefix=/home/parallels/Extended-Kalman-ROS/install
+
+Name: kuka_kickass_kalman
+Description: Description of kuka_kickass_kalman
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/parallels/Extended-Kalman-ROS/install/lib 
+Requires: 

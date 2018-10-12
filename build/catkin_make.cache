@@ -1,2 +1,2 @@
-youbot_description:youbot_simulation/youbot_gazebo_control:youbot_simulation/youbot_gazebo_robot:youbot_simulation/youbot_gazebo_worlds:youbot_simulation/youbot_simulation
+kuka_kickass_kalman:youbot_description:youbot_simulation/youbot_gazebo_control:youbot_simulation/youbot_gazebo_robot:youbot_simulation/youbot_gazebo_worlds:youbot_simulation/youbot_simulation
 -DCATKIN_DEVEL_PREFIX=/home/parallels/Extended-Kalman-ROS/devel -DCMAKE_INSTALL_PREFIX=/home/parallels/Extended-Kalman-ROS/install -G Unix Makefiles
