@@ -4,7 +4,9 @@ Extended kalman filter (EKF) localization sample
 
 author: Atsushi Sakai (@Atsushi_twi)
 
-modified by Ben Ware and Allen Spain
+modified by Ben Ware and Allen Spain (@Spain2394)
+
+10/14/2018
 
 """
 import numpy as np
@@ -15,6 +17,7 @@ import random
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Pose
+from kuka_kickass_kalman.msg import Obs
 
 
 # # Estimation parameter of EKF
@@ -87,26 +90,21 @@ def vel_callback(data):
     global vel
     vel = data
 
-# Range finder measured pose (i, j)
-# def simulate_measurement(xTrue):
-#     #gps i,j
-#     i = xTrue[0, 0]
-#     j = xTrue[1, 0]
-#     z = np.matrix([i, j])
-#     return z
-
 # TODO: test function
 def receive_measurement():
     rospy.init_node('kuka_measure_in', anonymous=True)
-    rospy.Subscriber('/', Twist, vel_callback)
-    u = np.matrix([vel.linear.x,vel.linear.y]).T
-    return u;
+    # what topic ?
+    # what message type??
+    rospy.Subscriber('sensor_readings', Obs, vel_callback)
+
+    i = meas.i
+    j = meas.j
+    z = np.matri([meas.i, meas.j])
+    return z;
 
 def vel_callback(data):
-    global vel
-    vel = data
-
-
+    global meas
+    meas = data
 
 def simulate_input_noise(u):
     ui = u[0, 0]*get_rand()
@@ -119,7 +117,6 @@ def simulate_measurement_noise(z):
     j = z[0,1] + np.random.randn()//2
     z = np.matrix([i, j])
     return z
-
 
 
 def motion_model(x, u):
@@ -177,6 +174,8 @@ def odom_error():
     error_pub = rospy.Publisher('/odom_error',Pose, queue_size=10)
     rospy.init_node('my_odom_error', anonymous=True)
     error_pub.publish(delta)
+
+
 # TODO: test function
 def my_odom_callback(data):
     global my_odom
@@ -231,9 +230,7 @@ def jacobH(x):
     return jH
 
 
-
 def ekf_estimation(xEst, PEst, z, u):
-
     #  Predict
     xPred = motion_model(xEst, u)
     jF = jacobF(xPred, u)
@@ -305,7 +302,6 @@ class kalman_filter:
         self.hz = np.zeros((1, 2))
         self.hu = np.zeros((1, 2))
 
-
     def move_forward(self,u,uTrue,z,zTrue):
         #main function
         u, uTrue, z, zTrue = check_input(u, uTrue, z, zTrue)
@@ -315,22 +311,20 @@ class kalman_filter:
         self.store_history(u,z)
         # move and publish
 
-     #def publish_my_odoms():
-
     def receive_inputs(self):
         uTrue = receive_input()
         xTrue = motion_model(self.xTrue, uTrue)
 
         # TODO: replace with measured data
-        zTrue = simulate_measurement(xTrue)
+        zTrue = receive_measurement(xTrue)
 
-        # maybe add measurement_noise
-        add_measurement_noise = True
+        # Error already added in sensor model
+        add_measurement_noise = False
         if add_measurement_noise: z = simulate_measurement_noise(zTrue)
         else:z=zTrue
 
         # maybe add input_noise
-        add_input_noise = True
+        add_input_noise = False
         if add_input_noise: u = simulate_input_noise(uTrue)
         else:u=uTrue
         return (u, uTrue, z, zTrue)
