@@ -2,7 +2,7 @@
 import rospy
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
-import ros_kalman_filter2
+from kuka_kickass_kalman.scripts import ros_kalman_filter2
 from kuka_kickass_kalman.msg import Obs
 
 def callback(vel_msg):
@@ -27,22 +27,32 @@ def callback(vel_msg):
     #estimate the postition
     xEsti,xEstj = kf.move_forward(u,uTrue,z,zTrue,generate_input_noise = True,generate_measurement_noise = False)
     
-    #caculate error
+    #caculate error 
     xErri, = zTruei-xEsti
     xErrj  = zTruej-xEstj
 
     #create and send position estimate messege
     global xEst_msg
-    xEst_msg    = Obs()
-    xEst_msg.z1 = xErri
-    xEst_msg.z2 = xErrj
+    xEst_msg    = Pose()
+    xEst_msg.position.x    = xEsti
+    xEst_msg.position.y    = xEstj
+    xEst_msg.position.z    = 0
+    xEst_msg.orientation.x = 0
+    xEst_msg.orientation.y = 0
+    xEst_msg.orientation.z = 0
+    xEst_msg.orientation.w = 0
     xEst_pub.publish(xEst_msg)
     
     #create and send error messege
     global xErr_msg
-    xErr_msg    = Obs()
-    xErr_msg.z1 = xErri
-    xErr_msg.z2 = xErrj
+    xErr_msg    = Pose()
+    xEst_msg.position.x    = xErri
+    xEst_msg.position.y    = xErrj
+    xEst_msg.position.z    = 0
+    xEst_msg.orientation.x = 0
+    xEst_msg.orientation.y = 0
+    xEst_msg.orientation.z = 0
+    xEst_msg.orientation.w = 0
     xErr_pub.publish(xErr_msg)
     
     #log info
@@ -53,8 +63,8 @@ def kf_node():
     kf = kalman_filter()
     rospy.init_node('kf_node', anonymous=True)
     
-    xEst_pub = rospy.Publisher('geometry_msgs/Pos/xEst', Twist, queue_size=10)
-    Err_pub = rospy.Publisher('geometry_msgs/Pos/error', Twist, queue_size=10)
+    xEst_pub = rospy.Publisher('geometry_msgs/Pos/xEst', Pose, queue_size=10)
+    Err_pub = rospy.Publisher('geometry_msgs/Pos/error', Pose, queue_size=10)
     
     rospy.Subscriber('/cmd_vel', Twist, callback=callback)
     rospy.spin()
