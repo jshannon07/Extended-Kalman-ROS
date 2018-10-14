@@ -84,7 +84,7 @@ def receive_measurement():
     rospy.init_node('kuka_measure_in', anonymous=True)
     # what topic ?
     # what message type??
-    sensor_msg = rospy.wait_for_message('sensor_readings', Obs)
+    meas = rospy.wait_for_message('sensor_readings', Obs)
 
     i = meas.z1
     j = meas.z2
