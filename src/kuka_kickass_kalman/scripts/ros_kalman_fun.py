@@ -1,14 +1,12 @@
-"""
 
-Extended kalman filter (EKF) localization sample
+#Extended kalman filter (EKF) localization sample
 
-author: Atsushi Sakai (@Atsushi_twi)
+#author: Atsushi Sakai (@Atsushi_twi)
 
-modified by Ben Ware and Allen Spain (@Spain2394)
+#modified by Ben Ware and Allen Spain (@Spain2394)
 
-10/14/2018
+#10/14/2018
 
-"""
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -70,15 +68,6 @@ def check_input(u, uTrue, z, zTrue):
     #return
     return (u, uTrue, z, zTrue)
 
-# def simulate_input():
-#     [v_i,v_j] = random.choice([[1,0],[-1,0],[0,1]]) # omitted [0,-1] to create tendency to move upward
-#     u = np.matrix([v_i, v_j]).T
-#     return u
-# capture command velocity
-# need to wait for input from user ??
-# need to teset
-
-# get cmd vel from Move_You
 # TODO: test function
 def receive_input():
     rospy.init_node('kuka_vel_in', anonymous=True)
@@ -95,11 +84,11 @@ def receive_measurement():
     rospy.init_node('kuka_measure_in', anonymous=True)
     # what topic ?
     # what message type??
-    rospy.Subscriber('sensor_readings', Obs, vel_callback)
+    sensor_msg = rospy.wait_for_message('sensor_readings', Obs)
 
-    i = meas.i
-    j = meas.j
-    z = np.matri([meas.i, meas.j])
+    i = meas.z1
+    j = meas.z2
+    z = np.matrix([i, j])
     return z;
 
 def vel_callback(data):
