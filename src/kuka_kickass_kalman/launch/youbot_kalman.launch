@@ -1,0 +1,10 @@
+<launch>
+  <include file="$(find youbot_gazebo_robot)/launch/youbot_base_only.launch">
+    <arg name="world" value="empty_world" />
+  </include>
+
+  <node name="sensor_model" pkg="kuka_kickass_kalman" type="sensor_model.py" />
+  <node name="Move_You" pkg="kuka_kickass_kalman" type="Move_You.py" />
+</launch>
+
+
