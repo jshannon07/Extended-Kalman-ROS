@@ -255,15 +255,15 @@ class kalman_filter:
 #         return 
 
 #example usage
-def main():
-    kf = kalman_filter()
-    for _ in range(100):
-        u, uTrue, z, zTrue = kf.simulate_inputs()
-        print(kf.move_forward(u,uTrue,z,zTrue))
-        kf.graph()
+# def main():
+#     kf = kalman_filter()
+#     for _ in range(100):
+#         u, uTrue, z, zTrue = kf.simulate_inputs()
+#         print(kf.move_forward(u,uTrue,z,zTrue))
+#         kf.graph()
     
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
   
 """
 # optional robot driver.
